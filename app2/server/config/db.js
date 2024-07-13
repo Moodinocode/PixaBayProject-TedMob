@@ -1,6 +1,5 @@
 import  pg  from 'pg'
-//import dontev from 'dontev';
-//dontev.config();
+
 
 const pool = new pg.Pool({
   user: process.env.DB_USER,
