@@ -1,6 +1,5 @@
 import  {Pool}  from 'pg'
 
-
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -8,9 +7,6 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD, 
   port: process.env.DB_PORT
 })
-
-
-
 
 
 export default pool;
