@@ -3,6 +3,7 @@ import {createBrowserRouter, createRoutesFromElements,Route,RouterProvider} from
 import LogInPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import SignupPage from './Pages/SignupPage';
+import FavoritesPage from './Pages/FavoritesPage';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Route index element = {<LogInPage/>}/>
         <Route path='/signup' element = {<SignupPage/>}/>
         <Route path='/Home' element = {<HomePage/>}/>
+        <Route path='/favorites' element = {<FavoritesPage/>}/>
       </Route>
     )
   )
