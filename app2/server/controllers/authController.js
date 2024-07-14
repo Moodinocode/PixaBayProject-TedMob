@@ -8,7 +8,7 @@ const signup = async (req,res) => {
   console.log('data recieved')
   const {email, password} = req.body;
   //check if email isnt already registered 
-    if (emailRegistered(email) > 0) {
+    if (emailRegistered(email)) {
       return res.status(400).json({ message: 'Email already registered.' });
     }else {
       console.log('email checked')
@@ -27,10 +27,12 @@ const signup = async (req,res) => {
   // console.log('mail sent')
 
   const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('hashed')
 
 
   createUser(email,hashedPassword)
-  res.status(201).json({ message: 'User registered. Verification email sent.'});
+  console.log('user craeted')
+  return res.status(201).json({ message: 'User registered. Verification email sent.'});
 }
 
 

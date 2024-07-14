@@ -18,7 +18,7 @@ const SignupPage = () => {
     try {
       const response = await axios.post('http://localhost:5000/signup', {email,password});
       console.log('Signup response:', response.data);
-      navigate('/home');
+      await navigate('/home');
     } catch (err) {
       console.log('error:',err)
     }
