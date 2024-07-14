@@ -1,7 +1,7 @@
 import pool from "../config/db.js";
 
 const createUser = async (email,password) => {
-  const result = await pool.query(`INSERT INTO users (email, password) VALUES (${email}, ${password}) RETURNING *`)
+  const result = await pool.query('INSERT INTO users (userEmail, userPassowrd) VALUES ($1, $2) RETURNING *', [email, password]);
   return result.rows[0];
 }
 
@@ -11,7 +11,7 @@ const updatePassword = async (email,newPassword) =>{
 }
 
 const emailRegistered = async (email) => {
-  const result = await pool.query(`SELECT COUNT(*) FROM users WHERE email = '${email}'`)
+  const result = await pool.query(`SELECT COUNT(*) FROM users WHERE userEmail = '${email}'`)
   return result === 0 ? true : false;
 }
 
