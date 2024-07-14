@@ -6,7 +6,7 @@ console.log("Database configuration:");
 console.log("PGUSER:", process.env.DB_USER);
 console.log("PGHOST:", process.env.DB_HOST);
 console.log("PGDATABASE:", process.env.DB_NAME);
-console.log("PGPASSWORD:", process.env.DB_PASSWORD ? "********" : "Not set"); // Mask the password for security
+console.log("PGPASSWORD:", process.env.DB_PASSWORD ? "********" : "Not set" ); // Mask the password for security
 console.log("PGPORT:",process.env.DB_PORT);
 
 const pool = new pg.Pool({
