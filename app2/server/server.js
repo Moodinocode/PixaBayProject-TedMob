@@ -13,12 +13,14 @@ app.use(cors());
 
 app.set('pool',pool)
 
-
+app.use('/', (req,res) => {
+  res.end('Hello world')
+})
 //Routes
 app.use('/', authRoutes)
 //app.use('/user', authencateToken,userRoutes)
 
 
-app.listen(process.env.PORT || 5000, ()=> {
-  console.log('Server running on port 5000')
+app.listen(process.env.PORT || 3000, ()=> {
+  console.log('Server running on port 3000')
 })
