@@ -11,10 +11,10 @@ const updatePassword = async (email,newPassword) =>{
 }
 
 const emailRegistered = async (email) => {
-  const result = await pool.query("SELECT COUNT(*) FROM users WHERE userEmail = ''$1''", ['hello@gmail.com'])// [email])
-  console.log(result.rows[0].count,10)
+  const result = await pool.query("SELECT COUNT(*) FROM users WHERE userEmail = $1", [email])
   const count = parseInt(result.rows[0].count,10);
-  return count === 0 ? false : true;
+  console.log(count)
+  return count !== 0;
 }
 
 export  {createUser,updatePassword, emailRegistered}

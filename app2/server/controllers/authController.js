@@ -8,13 +8,14 @@ const signup = async (req,res) => {
   console.log('data recieved')
   const {email, password} = req.body;
   //check if email isnt already registered 
-    if (emailRegistered(email)) {
+    if (await emailRegistered(email)) {
+      console.log('test')
       return res.status(400).json({ message: 'Email already registered.' });
     }else {
       console.log('email checked')
     }
 
-
+    console.log('crating token')
   //verify email exists
   const token = createToken({email})
   console.log('token created')
@@ -25,11 +26,11 @@ const signup = async (req,res) => {
   //   `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
   // )
   // console.log('mail sent')
-
+  console.log('hashing password')
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log('hashed')
 
-
+  console.log('creating user')
   createUser(email,hashedPassword)
   console.log('user craeted')
   return res.status(201).json({ message: 'User registered. Verification email sent.'});
