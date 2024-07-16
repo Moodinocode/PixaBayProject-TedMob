@@ -9,7 +9,6 @@ const signup = async (req,res) => {
   const {email, password} = req.body;
   //check if email isnt already registered 
     if (await emailRegistered(email)) {
-      console.log('test')
       return res.status(400).json({ message: 'Email already registered.' });
     }else {
       console.log('email checked')
@@ -20,12 +19,12 @@ const signup = async (req,res) => {
   const token = createToken({email})
   console.log('token created')
   const verificationUrl = `/verify-email?token=${token}`
-  // await sendMail(
-  //   email,
-  //   'Verification',
-  //   `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
-  // )
-  // console.log('mail sent')
+  await sendMail(
+    email,
+    'Verification',
+    `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
+  )
+  console.log('mail sent')
   console.log('hashing password')
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log('hashed')

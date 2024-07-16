@@ -7,12 +7,13 @@ const SignupPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('');
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      //setError('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
     try {
@@ -21,6 +22,7 @@ const SignupPage = () => {
 
       await navigate('/');
     } catch (err) {
+      setError(err.response.data.message)
       console.log('error:',err)
     }
   }
@@ -36,7 +38,10 @@ const SignupPage = () => {
               type="text" 
               className='bg-gray-200 m-4 p-4' 
               placeholder='Email'
-              onChange={(e)=>{setEmail(e.target.value)}}
+              onChange={(e)=>{
+                setEmail(e.target.value)
+                setError('');
+              }}
             />
           </div>
           <div>
@@ -44,7 +49,10 @@ const SignupPage = () => {
               type="text" 
               className='bg-gray-200 m-4 p-4' 
               placeholder='Password'
-              onChange={(e)=>{setConfirmPassword(e.target.value)}}
+              onChange={(e)=>{
+                setPassword(e.target.value)                
+                setError('');
+              }}
             />
           </div>
           <div>
@@ -52,9 +60,13 @@ const SignupPage = () => {
               type="text" 
               className='bg-gray-200 m-4 p-4' 
               placeholder='Confirm Passowrd'
-              onChange={(e)=>{setPassword(e.target.value)}}
+              onChange={(e)=>{
+                setConfirmPassword(e.target.value)
+                setError('');
+              }}
             />
           </div>
+          <p className='errortxt text-red-600'>{error}</p>
           <div>
             <button 
               type="submit" 
