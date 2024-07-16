@@ -7,6 +7,10 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: 'REDACTED_SMTP_USER',
     pass: 'REDACTED_SMTP_PASS'
+  },
+  secure: false, // Disable SSL
+  tls: {
+      rejectUnauthorized: false
   }
 });
 
@@ -18,7 +22,6 @@ const sendMail = (to,subject,text) => {
     text,
   };
   console.log(transporter)
-
   return transporter.sendMail(mailOptions);
 }
 
