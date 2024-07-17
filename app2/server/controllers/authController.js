@@ -21,13 +21,17 @@ const signup = async (req,res) => {
   const verificationUrl = `http://localhost:3000/verify-email?token=${token}`
   console.log(verificationUrl)
   console.log('sending mail')
-  if (!(await sendMail(
-    email,
-    'Verification',
-    `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
-  ))){
-    return res.status(500).json({ message: 'Error sending verification email' });
-  }
+
+
+  // if (!(await sendMail(
+  //   email,
+  //   'Verification',
+  //   `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
+  // ))){
+  //   return res.status(500).json({ message: 'Error sending verification email' });
+  // }
+
+
   console.log('mail sent')
   console.log('hashing password')
   const hashedPassword = await bcrypt.hash(password, 10);

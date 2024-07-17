@@ -1,0 +1,44 @@
+version: '3.8'
+
+services: 
+  server:
+    build: 
+      context: ./server 
+      dockerfile: Dockerfile
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - '5000:5000'
+    environment:
+      - DB_USER = postgres
+      - DB_PASSWORD = 123456
+      - DB_HOST = localhost
+      - DB_PORT = 5432
+      - DB_NAME = postgres
+    depends_on:
+      - db
+  client: 
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - '3000:3000'
+    environment:
+      - REACT_APP_PIXABAY_API_KEY='REDACTED_PIXABAY_KEY'
+    depends_on:
+      - server
+  db: 
+    image: postgres:16
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+
+volumes:
+  pgdata:
+  
+      

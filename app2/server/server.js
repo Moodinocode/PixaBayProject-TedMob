@@ -7,6 +7,12 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3000',
+  //methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add any other methods you need
+  credentials: true, // If you need to support credentials
+}))
+
 app.use(express.json()); 
 app.use(cors());
 
