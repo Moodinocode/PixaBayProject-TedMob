@@ -14,15 +14,25 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendMail = (to,subject,text) => {
+const sendMail = async (to,subject,text) => {
   const mailOptions = {
     form: 'mehdi21092005@gmail.com',
     to,
     subject,
     text,
   };
-  console.log(transporter)
-  return transporter.sendMail(mailOptions);
+  const sendMailPromise = transporter.sendMail(mailOptions);
+
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Timeout exceeded')), timeout)
+  );
+
+  return Promise.race([sendMailPromise, timeoutPromise])//this wont work beacuase it returns true if email is send successfully instead of it being returned
+    .then(() => true)
+    .catch(error => {
+      console.error('Error sending email:', error);
+      return false;
+    });
 }
 
 export default sendMail

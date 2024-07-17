@@ -22,14 +22,14 @@ const signup = async (req,res) => {
   console.log(verificationUrl)
   console.log('sending mail')
 
-
-  // if (!(await sendMail(
-  //   email,
-  //   'Verification',
-  //   `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
-  // ))){
-  //   return res.status(500).json({ message: 'Error sending verification email' });
-  // }
+    
+  if (!(await sendMail(
+    email,
+    'Verification',
+    `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
+  ))){
+    return res.status(500).json({ message: 'Error sending verification email' });
+  }
 
 
   console.log('mail sent')
