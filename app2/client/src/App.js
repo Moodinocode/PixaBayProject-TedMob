@@ -4,6 +4,7 @@ import LogInPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import SignupPage from './Pages/SignupPage';
 import FavoritesPage from './Pages/FavoritesPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
@@ -11,9 +12,9 @@ function App() {
     createRoutesFromElements(
       <Route path='/'>
         <Route index element = {<LogInPage/>}/>
-        <Route path='/signup' element = {<SignupPage/>}/>
-        <Route path='/Home' element = {<HomePage/>}/>
-        <Route path='/favorites' element = {<FavoritesPage/>}/>
+        <ProtectedRoute path='/signup' element = {<SignupPage/>}/>
+        <ProtectedRoute path='/Home' element = {<HomePage/>}/>
+        <ProtectedRoute path='/favorites' element = {<FavoritesPage/>}/>
       </Route>
     )
   )

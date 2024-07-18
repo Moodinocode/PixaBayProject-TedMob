@@ -13,7 +13,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', {email,password});
+      const response = await axios.post('http://localhost:5000/auth/login', {email,password});
       console.log('login response:', response.data);
       const url = response.data.url
       await navigate(url,{ replace: true });

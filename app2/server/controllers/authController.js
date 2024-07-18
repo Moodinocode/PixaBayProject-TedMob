@@ -54,9 +54,6 @@ const login = async (req,res) => {
     console.log('email registered')
   }
 
-
-
-
   if (!userIsAuthorized(email)){
     const token = createToken({email})
     const id= getID(email)
