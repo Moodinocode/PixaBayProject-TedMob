@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import pool from '../config/db.js'
 import { createToken,verifyToken } from '../config/jwt.js'
-import {createUser,updatePassword, emailRegistered} from '../models/User.js'
+import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPassword,getID} from '../models/User.js'
 import sendMail from '../config/nodemailer.js'
 
 const signup = async (req,res) => {
@@ -17,8 +17,8 @@ const signup = async (req,res) => {
   console.log('creating token')
   //verify email exists
   const token = createToken({email})
-  console.log('token created')
-  const verificationUrl = `http://localhost:3000/verify-email?token=${token}`
+  const id= getID(email)
+  const verificationUrl = `http://localhost:3000/verify?id=${id}&token=${token}`
   console.log(verificationUrl)
   console.log('sending mail')
 
@@ -45,12 +45,67 @@ const signup = async (req,res) => {
 
 
 
-// const login = async (req,res) => {
-//   const {email, password} = req.body;
-//   if (emailRegistered(email) == 0) {
-//     return res.status(400).json({ message: 'Email registered' });
-//   }
-// }
+const login = async (req,res) => {
+  const {email, password} = req.body;
+  console.log(email)
+  if (!(await emailRegistered(email))) {
+    return res.status(400).json({ message: 'Email is not registered.' });
+  }else {
+    console.log('email registered')
+  }
+
+
+
+
+  if (!userIsAuthorized(email)){
+    const token = createToken({email})
+    const id= getID(email)
+    const verificationUrl = `http://localhost:3000/verify?id=${id}&token=${token}`
+    console.log(verificationUrl)
+    console.log('sending mail')
+    if (!(await sendMail(
+      email,
+      'Verification',
+      `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
+    ))){
+      return res.status(500).json({ message: 'Error sending verification email' });
+    }  
+    return res.status(400).json({ message: 'You must verify you email first.' });
+  }else {
+    console.log('email verified')
+  }
+  console.log(email)
+  if (!checkPassword(email,password)){
+    return res.status(400).json({ message: 'Password is incorrect' });
+  }else {
+    console.log('password checked')
+  }
+
+
+  
+  console.log('creating token')
+  const token = createToken(email)
+  console.log('token created')
+  console.log(email)
+  const id= getID(email)
+
+  const userURL = `http://localhost:3000/home?id=${id}&token=${token}`
+  
+  
+  res.json({ url: userURL });
+
+}
+
+const accVerification = async (req,res) => {
+  const {id ,token} = req.query
+  try{
+    verifyToken(token)
+    authorizeUser(id)
+  } catch(err){
+    return res.status(400).json({ message: `error: ${err.message}` });
+  }
+  return res.status(201).json({message: 'User Authorized Successfully'})
+}
 
 
 
@@ -74,4 +129,4 @@ const signup = async (req,res) => {
 // }
 
 //export {signup,login,resetPassword}
-export {signup}
+export {signup,login,accVerification}

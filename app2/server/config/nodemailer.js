@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer'
 
+const timeout = 5*60*1000
+
 const transporter = nodemailer.createTransport({
   host:'sandbox.smtp.mailtrap.io',
   port: 587,

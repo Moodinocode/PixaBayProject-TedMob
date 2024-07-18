@@ -5,6 +5,11 @@ const createUser = async (email,password) => {
   return result.rows[0];
 }
 
+const checkPassword = async (email,password) => {
+  const result = await pool.query('Select 1 FROM users WHERE userEmail = $1 AND userPassowrd = $2', [email, password]);
+  return result === 1;
+}
+
 const updatePassword = async (email,newPassword) =>{
   const result = await pool.query(`Update users SET password = '${newPassword}' WHERE email = '${email}'`)
   return result.rows[0];
@@ -17,4 +22,14 @@ const emailRegistered = async (email) => {
   return count !== 0;
 }
 
-export  {createUser,updatePassword, emailRegistered}
+const userIsAuthorized = async(email) => {
+  return await pool.query("SELECT authorized FROM users WHERE userEmail = $1", [email])
+}
+const getID = async(email) => {
+  return await pool.query("SELECT id FROM users WHERE userEmail = $1", [email])
+}
+const authorizeUser = async(id) => {
+  return await pool.query("Update users SET authorized = TRUE WHERE id = $1", [id])
+}
+
+export  {createUser,updatePassword, emailRegistered, userIsAuthorized, checkPassword,authorizeUser,getID}

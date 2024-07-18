@@ -9,7 +9,7 @@ import MediaItem from '../components/MediaItem';
 const HomePage = () => {
   const [media, setMedia] = useState([]);
   const [query,setQuery] = useState('nature') //defualt is nature
-
+  
 
   useEffect(()=> {
     const getMedia = async () => {

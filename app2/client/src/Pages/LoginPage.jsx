@@ -1,16 +1,26 @@
-import React from 'react'
-import { useState } from 'react'
-import {Link} from 'react-router-dom'
+import React, { useState } from 'react'
+import axios from 'axios'
+import {Link,useNavigate} from 'react-router-dom'
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // check if user is in database based on current email and password
-    // if yes the log in 
-    // if not return error message with suggestion to create new user
+    try {
+      const response = await axios.post('http://localhost:5000/login', {email,password});
+      console.log('login response:', response.data);
+      const url = response.data.url
+      await navigate(url,{ replace: true });
+    } catch (err) {
+      setError(err.response.data.message)
+      console.log('error:',err)
+    }
   }
 
 
@@ -23,7 +33,10 @@ const LoginPage = () => {
               type="text" 
               className='bg-gray-200 m-4 p-4' 
               placeholder='Email'
-              onchange={(e)=>{setEmail(e.target.value)}}
+              onChange={(e)=>{
+                setEmail(e.target.value)
+                setError('');
+              }}
             />
           </div>
           <div>
@@ -31,9 +44,13 @@ const LoginPage = () => {
               type="text" 
               className='bg-gray-200 m-4 p-4' 
               placeholder='Passowrd'
-              onchange={(e)=>{setPassword(e.target.value)}}
+              onChange={(e)=>{
+                setPassword(e.target.value)                
+                setError('');
+              }}
             />
           </div>
+          <p className='errortxt text-red-600'>{error}</p>
           <div>
             <button 
               type="submit" 
