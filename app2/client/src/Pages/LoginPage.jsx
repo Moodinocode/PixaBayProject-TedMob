@@ -15,8 +15,14 @@ const LoginPage = () => {
     try {
       const response = await axios.post('http://localhost:5000/auth/login', {email,password});
       console.log('login response:', response.data);
+
       const url = response.data.url
-      await navigate(url,{ replace: true });
+      console.log(url)
+      if (url) {
+        navigate(url);
+      } else {
+        console.error('URL is invalid:', url);
+      }
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',err)

@@ -89,10 +89,12 @@ const login = async (req,res) => {
 
   
   console.log('creating token')
-  const token = createToken({email})
+  const token = await createToken({email})
   console.log('token created')
   console.log(email)
-  const id= getID(email)
+  console.log('getting ID')
+  const id= await getID(email)
+  console.log('ID gotid =',id)
 
   const userURL = `/home?id=${id}&token=${token}`
   

@@ -28,10 +28,13 @@ const userIsAuthorized = async(email) => {
   return result.rows[0].authorized;
 }
 const getID = async(email) => {
-  return await pool.query("SELECT id FROM users WHERE userEmail = $1", [email])
+  const result = await pool.query("SELECT id FROM users WHERE userEmail = $1", [email])
+  console.log('get ID id =',result.rows[0].id)
+  return result.rows[0].id;
 }
 const authorizeUser = async(id) => {
-  return await pool.query("Update users SET authorized = TRUE WHERE id = $1", [id])
+  const result = await pool.query("Update users SET authorized = TRUE WHERE id = $1", [id])
+  return result.rows[0];
 }
 
 export  {createUser,updatePassword, emailRegistered, userIsAuthorized, checkPassword,authorizeUser,getID}
