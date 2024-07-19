@@ -24,7 +24,7 @@ app.set('pool',pool)
 //Routes
 app.use('/auth', authRoutes)
 app.use('/',protectedRoutes)
-app.use()
+
 //app.use('/user', authencateToken,userRoutes)
 
 
