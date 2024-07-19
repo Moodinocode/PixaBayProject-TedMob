@@ -2,12 +2,17 @@ CREATE TABLE users (
   userEmail varchar(100),
   userPassowrd varchar(255)
 );
+ALTER TABLE users 
+ADD COLUMN id integer AutoIncremet;
+
 ALTER TABLE users
-ADD COLUMN authorized boolean default false;
+ADD COLUMN id SERIAL PRIMARY KEY;
 
+update users set authorized =FALSE
 
+Delete from users where id = 2
 SELECT * FROM users Limit 50;
-Up
+
 
 INSERT INTO users VALUES('Mohamad@Mehdi.com','test')
 

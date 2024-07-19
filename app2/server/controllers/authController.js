@@ -18,7 +18,7 @@ const signup = async (req,res) => {
   //verify email exists
   const token = createToken({email})
   const id= getID(email)
-  const verificationUrl = `http://localhost:3000/verify?id=${id}&token=${token}`
+  const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
   console.log(verificationUrl)
   console.log('sending mail')
 
@@ -54,20 +54,28 @@ const login = async (req,res) => {
     console.log('email registered')
   }
 
-  if (!userIsAuthorized(email)){
+  if (!(await userIsAuthorized(email))){
     const token = createToken({email})
     const id= getID(email)
-    const verificationUrl = `http://localhost:3000/verify?id=${id}&token=${token}`
+    const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
     console.log(verificationUrl)
     console.log('sending mail')
-    if (!(await sendMail(
-      email,
-      'Verification',
-      `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
-    ))){
+    try 
+    {
+      await sendMail(
+        email,
+        'Verification',
+        `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
+      )
+    } 
+    catch 
+    {
       return res.status(500).json({ message: 'Error sending verification email' });
-    }  
-    return res.status(400).json({ message: 'You must verify you email first.' });
+    } 
+    finally 
+    {
+      return res.status(400).json({ message: 'You must verify you email first.' });
+    } 
   }else {
     console.log('email verified')
   }
@@ -81,12 +89,12 @@ const login = async (req,res) => {
 
   
   console.log('creating token')
-  const token = createToken(email)
+  const token = createToken({email})
   console.log('token created')
   console.log(email)
   const id= getID(email)
 
-  const userURL = `http://localhost:3000/home?id=${id}&token=${token}`
+  const userURL = `/home?id=${id}&token=${token}`
   
   
   res.json({ url: userURL });
@@ -95,6 +103,8 @@ const login = async (req,res) => {
 
 const accVerification = async (req,res) => {
   const {id ,token} = req.query
+  console.log('accVerification = ',id)
+  console.log('accVerification = ',token)
   try{
     verifyToken(token)
     authorizeUser(id)

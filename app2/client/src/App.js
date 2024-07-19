@@ -1,5 +1,5 @@
 import './App.css';
-import {createBrowserRouter, createRoutesFromElements,Route,RouterProvider} from 'react-router-dom'
+import {createBrowserRouter, createRoutesFromElements,Route,RouterProvider,Routes} from 'react-router-dom'
 import LogInPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import SignupPage from './Pages/SignupPage';
@@ -12,9 +12,11 @@ function App() {
     createRoutesFromElements(
       <Route path='/'>
         <Route index element = {<LogInPage/>}/>
-        <ProtectedRoute path='/signup' element = {<SignupPage/>}/>
-        <ProtectedRoute path='/Home' element = {<HomePage/>}/>
-        <ProtectedRoute path='/favorites' element = {<FavoritesPage/>}/>
+        <Route path='/signup' element = {<SignupPage/>}/>
+        <Route element={<ProtectedRoute/>}>
+          <Route path='/home' element = {<HomePage/>}/>
+          <Route path='/favorites' element = {<FavoritesPage/>}/>
+        </Route>
       </Route>
     )
   )

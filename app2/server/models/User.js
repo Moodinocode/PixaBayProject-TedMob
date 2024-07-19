@@ -23,7 +23,9 @@ const emailRegistered = async (email) => {
 }
 
 const userIsAuthorized = async(email) => {
-  return await pool.query("SELECT authorized FROM users WHERE userEmail = $1", [email])
+  const result = await pool.query("SELECT authorized FROM users WHERE userEmail = $1", [email])
+  console.log('result =',result.rows[0].authorized)
+  return result.rows[0].authorized;
 }
 const getID = async(email) => {
   return await pool.query("SELECT id FROM users WHERE userEmail = $1", [email])
