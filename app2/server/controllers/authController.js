@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import pool from '../config/db.js'
 import { createToken,verifyToken } from '../config/jwt.js'
-import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPassword,getID} from '../models/User.js'
+import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPassword,getID,authorizeUser} from '../models/User.js'
 import sendMail from '../config/nodemailer.js'
 
 const signup = async (req,res) => {
@@ -55,8 +55,8 @@ const login = async (req,res) => {
   }
 
   if (!(await userIsAuthorized(email))){
-    const token = createToken({email})
-    const id= getID(email)
+    const token = await createToken({email})
+    const id= await getID(email)
     const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
     console.log(verificationUrl)
     console.log('sending mail')
@@ -97,6 +97,7 @@ const login = async (req,res) => {
   console.log('ID gotid =',id)
 
   const userURL = `/home?id=${id}&token=${token}`
+  console.log(userURL)
   
   
   res.json({ url: userURL });
