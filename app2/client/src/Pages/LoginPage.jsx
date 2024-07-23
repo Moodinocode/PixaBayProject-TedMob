@@ -16,8 +16,12 @@ const LoginPage = () => {
       const response = await axios.post('http://localhost:5000/auth/login', {email,password});
       console.log('login response:', response.data);
 
-      const url = response.data.url
-      console.log(url)
+
+      const {id,token} = response.data
+      localStorage.setItem('token', token);
+
+      const url = `/home?token=${token}`
+      
       if (url) {
         navigate(url);
       } else {
@@ -25,7 +29,7 @@ const LoginPage = () => {
       }
     } catch (err) {
       setError(err.response.data.message)
-      console.log('error:',err)
+      console.log('error:',error)
     }
   }
 

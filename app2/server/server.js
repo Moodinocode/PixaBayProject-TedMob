@@ -1,7 +1,8 @@
 import express from 'express';
 import pool from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
-import protectedRoutes from './routes/authRoutes.js'
+import protectedRoutes from './routes/protectedRoutes.js'
+import favoriteRoutes from './routes/favoriteRoutes.js'
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -24,6 +25,7 @@ app.set('pool',pool)
 //Routes
 app.use('/auth', authRoutes)
 app.use('/',protectedRoutes)
+app.use('/favorites',favoriteRoutes)
 
 //app.use('/user', authencateToken,userRoutes)
 

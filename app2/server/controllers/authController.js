@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs'
-import pool from '../config/db.js'
 import { createToken,verifyToken } from '../config/jwt.js'
 import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPassword,getID,authorizeUser} from '../models/User.js'
 import sendMail from '../config/nodemailer.js'
@@ -96,12 +95,7 @@ const login = async (req,res) => {
   const id= await getID(email)
   console.log('ID gotid =',id)
 
-  const userURL = `/home?id=${id}&token=${token}`
-  console.log(userURL)
-  
-  
-  res.json({ url: userURL });
-
+  res.json({ id: id,token:token });
 }
 
 const accVerification = async (req,res) => {
