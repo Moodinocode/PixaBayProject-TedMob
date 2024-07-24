@@ -1,4 +1,4 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 
 const setFavorite = async (user_id, media_link_thumbnail, media_link_active, media_type) => {
   const result = await pool.query(

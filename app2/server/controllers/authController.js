@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { createToken,verifyToken } from '../config/jwt.js'
+import { createDBToken } from '../models/token.js'
 import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPassword,getID,authorizeUser} from '../models/User.js'
 import sendMail from '../config/nodemailer.js'
 
@@ -12,26 +13,10 @@ const signup = async (req,res) => {
     }else {
       console.log('email checked')
     }
-
   console.log('creating token')
   //verify email exists
   const token = createToken({email})
-  const id= getID(email)
-  const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
-  console.log(verificationUrl)
-  console.log('sending mail')
 
-    
-  if (!(await sendMail(
-    email,
-    'Verification',
-    `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
-  ))){
-    return res.status(500).json({ message: 'Error sending verification email' });
-  }
-
-
-  console.log('mail sent')
   console.log('hashing password')
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log('hashed')
@@ -39,6 +24,19 @@ const signup = async (req,res) => {
   console.log('creating user')
   createUser(email,hashedPassword)
   console.log('user craeted')
+  const id = getID(email)
+  createDBToken(token,id)
+  const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
+  console.log(verificationUrl)
+  console.log('sending mail')
+
+  if (!(await sendMail(
+    email,
+    'Verification',
+    `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
+  ))){
+    return res.status(500).json({ message: 'Error sending verification email' });
+  }
   return res.status(201).json({ message: 'User registered. Verification email sent.'});
 }
 

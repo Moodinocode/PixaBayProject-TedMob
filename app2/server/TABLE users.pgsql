@@ -12,6 +12,8 @@ update users set authorized =true
 
 Delete from users where id = 2
 SELECT * FROM users Limit 50;
+SELECT * FROM favorites Limit 50;
+SELECT * FROM tokens Limit 50;
 
 
 INSERT INTO users VALUES('Mohamad@Mehdi.com','test')

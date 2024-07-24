@@ -1,5 +1,5 @@
-import {setFavorite,removeFavorite,getAllFavorites} from '../models/Favorite'
-import { getID } from '../models/User';
+import {setFavorite,removeFavorite,getAllFavorites} from '../models/Favorite.js'
+import { getID } from '../models/User.js';
 
 const toggleLike = async (req,res) => {
   const {item,loggedEmail,isLiked} = req.body;

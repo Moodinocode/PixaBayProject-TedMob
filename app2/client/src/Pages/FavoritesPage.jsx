@@ -1,6 +1,7 @@
-import React from 'react'
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar';
+import axios from 'axios'
+import MediaItem from '../components/MediaItem'
 
 
 const FavoritesPage = () => {
