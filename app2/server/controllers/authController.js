@@ -57,7 +57,7 @@ const login = async (req,res) => {
   if (!(await userIsAuthorized(email))){
     const id = await getID(email)
     const token = await getDBTokenById(id)
-    createDBToken(token,id)
+    //createDBToken(token,id)
   
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
     console.log(verificationUrl)
