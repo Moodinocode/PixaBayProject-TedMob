@@ -17,8 +17,7 @@ const LoginPage = () => {
       console.log('login response:', response.data);
 
 
-      const {id,token} = response.data
-      localStorage.setItem('token', token);
+      const token= localStorage.getItem(token)
 
       const url = `/home?token=${token}`
       

@@ -14,8 +14,7 @@ const signup = async (req,res) => {
       console.log('email checked')
     }
   console.log('creating token')
-  //verify email exists
-  const token = createToken({email})
+
 
   console.log('hashing password')
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,8 +24,10 @@ const signup = async (req,res) => {
   createUser(email,hashedPassword)
   console.log('user craeted')
   const id = getID(email)
+  const token = createToken({id})
   createDBToken(token,id)
-  const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
+  
+  const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
   console.log(verificationUrl)
   console.log('sending mail')
 
@@ -52,9 +53,11 @@ const login = async (req,res) => {
   }
 
   if (!(await userIsAuthorized(email))){
-    const token = await createToken({email})
-    const id= await getID(email)
-    const verificationUrl = `http://localhost:3000/auth/verify?id=${id}&token=${token}`
+    const id = getID(email)
+    const token = createToken({id})
+    createDBToken(token,id)
+  
+  const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
     console.log(verificationUrl)
     console.log('sending mail')
     try 
@@ -83,11 +86,6 @@ const login = async (req,res) => {
     console.log('password checked')
   }
 
-
-  
-  console.log('creating token')
-  const token = await createToken({email})
-  console.log('token created')
   console.log(email)
   console.log('getting ID')
   const id= await getID(email)
@@ -97,11 +95,11 @@ const login = async (req,res) => {
 }
 
 const accVerification = async (req,res) => {
-  const {id ,token} = req.query
-  console.log('accVerification = ',id)
+  const token = req.query
   console.log('accVerification = ',token)
   try{
     verifyToken(token)
+    const id = await getID(token)
     authorizeUser(id)
   } catch(err){
     return res.status(400).json({ message: `error: ${err.message}` });

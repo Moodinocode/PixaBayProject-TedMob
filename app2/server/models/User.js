@@ -1,7 +1,8 @@
 import pool from "../config/db.js";
 
 const createUser = async (email,password) => {
-  const result = await pool.query('INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *', [email, password]);
+  const result = await pool.query(
+    'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *', [email, password]);
   return result.rows[0];
 }
 
@@ -11,7 +12,10 @@ const checkPassword = async (email,password) => {
 }
 
 const updatePassword = async (email,newPassword) =>{
-  const result = await pool.query(`Update users SET password = '${newPassword}' WHERE email = '${email}'`)
+  const result = await pool.query(
+    'UPDATE users SET password = $1 WHERE email = $2 RETURNING *',
+    [newPassword, email]
+  );
   return result.rows[0];
 }
 
@@ -23,17 +27,25 @@ const emailRegistered = async (email) => {
 }
 
 const userIsAuthorized = async(email) => {
-  const result = await pool.query("SELECT authorized FROM users WHERE email = $1", [email])
-  console.log('result =',result.rows[0].authorized)
-  return result.rows[0].authorized;
-}
-const getID = async(email) => {
+  const result = await pool.query(
+    'SELECT verified FROM users WHERE email = $1',
+    [email]
+  );
+  if (result.rows.length === 0) {
+    console.log('No user found with this email');
+    return false;
+  }
+  console.log('User verification status =', result.rows[0].verified);
+  return result.rows[0].verified;
+};
+
+const getID = async (email) => {
   const result = await pool.query("SELECT id FROM users WHERE email = $1", [email])
   console.log('get ID id =',result.rows[0])
   return result.rows[0];
 }
 const authorizeUser = async(id) => {
-  const result = await pool.query("Update users SET authorized = TRUE WHERE id = $1", [id])
+  const result = await pool.query('UPDATE users SET verified = TRUE WHERE id = $1 RETURNING *', [id])
   return result.rows[0];
 }
 
