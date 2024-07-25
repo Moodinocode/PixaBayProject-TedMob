@@ -8,7 +8,7 @@ ADD COLUMN id integer AutoIncremet;
 ALTER TABLE users
 ADD COLUMN id SERIAL PRIMARY KEY;
 
-update users set authorized =true
+update users set verified =true
 
 Delete from users where id = 2
 SELECT * FROM users Limit 50;
@@ -63,3 +63,6 @@ DROP TABLE IF EXISTS users;
 
 ALTER TABLE Users
 ADD COLUMN verified BOOLEAN DEFAULT FALSE;
+
+
+TRUNCATE TABLE Tokens, Favorites, Users RESTART IDENTITY CASCADE;

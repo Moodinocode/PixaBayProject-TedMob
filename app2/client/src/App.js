@@ -5,7 +5,7 @@ import HomePage from './Pages/HomePage';
 import SignupPage from './Pages/SignupPage';
 import FavoritesPage from './Pages/FavoritesPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import VerifyEmail from './components/VerifyEmail';
+import VerifyEmail from './Pages/VerifyEmail';
 
 function App() {
   const router = createBrowserRouter(

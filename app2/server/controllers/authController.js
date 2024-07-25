@@ -1,20 +1,19 @@
 import bcrypt from 'bcryptjs'
 import { createToken,verifyToken } from '../config/jwt.js'
-import { createDBToken } from '../models/token.js'
+import { createDBToken,getDBTokenById } from '../models/token.js'
 import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPassword,getID,authorizeUser} from '../models/User.js'
 import sendMail from '../config/nodemailer.js'
 
 const signup = async (req,res) => {
   console.log('data recieved')
   const {email, password} = req.body;
-  //check if email isnt already registered 
-    if (await emailRegistered(email)) {
-      return res.status(400).json({ message: 'Email already registered.' });
-    }else {
-      console.log('email checked')
-    }
-  console.log('creating token')
 
+  //check if email isnt already registered 
+  if (await emailRegistered(email)) {
+    return res.status(400).json({ message: 'Email already registered.' });
+  }else {
+    console.log('email checked')
+  }
 
   console.log('hashing password')
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,8 +22,11 @@ const signup = async (req,res) => {
   console.log('creating user')
   createUser(email,hashedPassword)
   console.log('user craeted')
-  const id = getID(email)
-  const token = createToken({id})
+
+  const id = await getID(email)
+  console.log(id)
+  const token = createToken({id: id})
+  console.log(token)
   createDBToken(token,id)
   
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
@@ -53,8 +55,8 @@ const login = async (req,res) => {
   }
 
   if (!(await userIsAuthorized(email))){
-    const id = getID(email)
-    const token = createToken({id})
+    const id = await getID(email)
+    const token = await getDBTokenById(id)
     createDBToken(token,id)
   
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
@@ -62,18 +64,21 @@ const login = async (req,res) => {
     console.log('sending mail')
     try 
     {
+      console.log('try block')
       await sendMail(
         email,
         'Verification',
         `Click on the link below to verify your signup to PixaBay Project: \n\n${verificationUrl}`
       )
     } 
-    catch 
+    catch (err)
     {
+      console.log('catch block')
       return res.status(500).json({ message: 'Error sending verification email' });
     } 
     finally 
     {
+      console.log('finally block')
       return res.status(400).json({ message: 'You must verify you email first.' });
     } 
   }else {
@@ -88,10 +93,11 @@ const login = async (req,res) => {
 
   console.log(email)
   console.log('getting ID')
-  const id= await getID(email)
-  console.log('ID gotid =',id)
+  const id = await getID(email)
+  console.log('ID got id =',id)
+  const token = getDBTokenById(id);
 
-  res.json({ id: id,token:token });
+  res.json({token: token });
 }
 
 const accVerification = async (req,res) => {

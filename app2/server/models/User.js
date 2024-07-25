@@ -41,8 +41,8 @@ const userIsAuthorized = async(email) => {
 
 const getID = async (email) => {
   const result = await pool.query("SELECT id FROM users WHERE email = $1", [email])
-  console.log('get ID id =',result.rows[0])
-  return result.rows[0];
+  console.log('get ID id =',result.rows[0].id)
+  return result.rows[0].id;
 }
 const authorizeUser = async(id) => {
   const result = await pool.query('UPDATE users SET verified = TRUE WHERE id = $1 RETURNING *', [id])

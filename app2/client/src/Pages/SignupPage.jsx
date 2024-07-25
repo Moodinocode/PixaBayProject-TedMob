@@ -74,7 +74,7 @@ const SignupPage = () => {
               >submit</button>
             </div>
               <div className='text-sm mb-2'>
-              <Link className='text-blue-500 hover:text-blue-700 underline' to="/log-in">Log in</Link>
+              <Link className='text-blue-500 hover:text-blue-700 underline' to="/">Log in</Link>
             </div>
 
           </form>
