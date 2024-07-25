@@ -101,12 +101,24 @@ const login = async (req,res) => {
 }
 
 const accVerification = async (req,res) => {
-  const token = req.query
+  const {token} = await req.query
   console.log('accVerification = ',token)
   try{
-    verifyToken(token)
-    const id = await getID(token)
+
+    console.log('verifying token')
+    const tokenverified = await verifyToken(token)
+    console.log('token verified: ',tokenverified)
+
+
+    const id = tokenverified.id
+
+
+    console.log('authorizing User')
     authorizeUser(id)
+    console.log('User authorized ')
+
+
+    
   } catch(err){
     return res.status(400).json({ message: `error: ${err.message}` });
   }

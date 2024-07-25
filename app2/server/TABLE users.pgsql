@@ -8,7 +8,7 @@ ADD COLUMN id integer AutoIncremet;
 ALTER TABLE users
 ADD COLUMN id SERIAL PRIMARY KEY;
 
-update users set verified =true
+update users set verified =FALSE
 
 Delete from users where id = 2
 SELECT * FROM users Limit 50;

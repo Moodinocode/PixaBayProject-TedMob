@@ -19,14 +19,8 @@ const LoginPage = () => {
 
       const {token} = response.data
       localStorage.setItem("token",token)
+      navigate('/home');
 
-      const url = `/home?token=${token}`
-      
-      if (url) {
-        navigate(url);
-      } else {
-        console.error('URL is invalid:', url);
-      }
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',error)

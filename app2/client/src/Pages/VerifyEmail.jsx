@@ -15,8 +15,8 @@ const VerifyEmail = () => {
         });
         setMessage(response.data.message);
       } catch (error) {
-        //setMessage('Verification failed. Please try again later.');
-        setMessage(error.message);
+        setMessage('Verification failed. Please try again later.');
+        console.error('Error verifying token:', error); // Log the error for debugging
       }
     };
 
