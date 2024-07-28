@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import Navbar from '../components/Navbar'
 import SearchBar from '../components/SearchBar';
 import { fetchMedia } from '../services/pixabayService';
@@ -9,6 +10,8 @@ import MediaItem from '../components/MediaItem';
 const HomePage = () => {
   const [media, setMedia] = useState([]);
   const [query,setQuery] = useState('nature') //defualt is nature
+  const [likedItems,setLikedItems] = useState([]);
+  const token = localStorage.getItem('token');
   
 
   useEffect(()=> {
@@ -20,10 +23,18 @@ const HomePage = () => {
         console.error('Error fetching media:', error);
       }
     }
+    const getLikedItems = async () => {
+      try {
+        const response  = await axios.post('http://localhost:5000/favorites/page',{token})
+        console.log('returned data:', response.data)
+        setLikedItems(response.data)
+      } catch (error) {
+        
+      }
+    }
+    getLikedItems()
     getMedia();
-  },[query])
-
-
+  },[query,token])
 
   const handleSearch = (searchTerm) => {
     setQuery(searchTerm);
@@ -39,7 +50,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {media.map((item) => (
               
-              <MediaItem key={item.id} item={item}/>
+              <MediaItem key={item.id} item={item} like={likedItems.includes(item.id)} />
 
             )
             )}

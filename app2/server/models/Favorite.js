@@ -25,7 +25,8 @@ const getAllFavorites = async (user_id) => {
     `SELECT * FROM favorites WHERE user_id = $1`,
     [user_id]
   );
-  return result.rows;
+  console.log('getAllFavorites result:',result.rows)
+  return result.rows.map(row => row.media);
 };
 
 export {setFavorite,removeFavorite,getAllFavorites}

@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className='bg-green-600 border-b border-indigo-500'>
       <div className='mx-auto max-w-5xl'>
         <div className='flex h-20 items-center justify-between'>
-          <NavLink className={NavDesign} to='/'>Home</NavLink>
+          <NavLink className={NavDesign} to='/home'>Home</NavLink>
           <NavLink className={NavDesign} to='/favorites'>Favorites</NavLink>
           <NavLink className={NavDesign} onClick={handleLogout} to='/'>logout</NavLink>
         </div>

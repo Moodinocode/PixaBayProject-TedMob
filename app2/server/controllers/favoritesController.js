@@ -1,5 +1,6 @@
 import { verifyToken } from '../config/jwt.js';
 import {setFavorite,removeFavorite,getAllFavorites} from '../models/Favorite.js'
+import { getDBTokenById } from '../models/token.js';
 import { getID } from '../models/User.js';
 
 const toggleLike = async (req,res) => {
@@ -37,10 +38,13 @@ const toggleLike = async (req,res) => {
 
 
 const returnFavorites = async (req,res) => {
-  const {email} = req.body;
-  const user_id = getID(email)
+  const {token} = req.body;
+  console.log('returnFavorites token:',token)
+  const user_id = verifyToken(token).id
+  console.log('returnFavorites id:',user_id)
   try {
     const favorites = await getAllFavorites(user_id);
+    console.log('id:',user_id,'has the following as favorites: ',favorites)
     res.status(200).json(favorites);
   } catch (error) {
     res.status(500).json({ error: error.message });

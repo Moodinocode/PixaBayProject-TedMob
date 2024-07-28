@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const MediaItem = ({item}, like = false) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
-  const [liked, setLiked] =  useState(false);//needs change
+  const [liked, setLiked] =  useState(like);
   const [error, setError] = useState('');
   const token = localStorage.getItem('token');
 

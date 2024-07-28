@@ -15,8 +15,9 @@ const FavoritesPage = () => {
   useEffect(()=> {
     const getMedia = async () => {
       try {
-        const data = await axios.post('http://localhost:5000/favorites/page',{token})
-        setMedia(data)
+        const response  = await axios.post('http://localhost:5000/favorites/page',{token})
+        console.log('returned data:', response.data)
+        setMedia(response.data)
       } catch (error) {
         console.error('Error fetching media:', error);
       }
@@ -31,7 +32,7 @@ const FavoritesPage = () => {
       <div className="container-xl lg:container m-auto bg-blue-50 px-4 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {media.map((item) => (
-            <MediaItem key={item.id} item={item}/>
+            <MediaItem key={item.id} item={item} like={true}/>
           )
           )}
         </div>
