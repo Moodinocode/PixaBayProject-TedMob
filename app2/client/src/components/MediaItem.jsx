@@ -19,11 +19,9 @@ const MediaItem = ({item}, like = false) => {
   const handleLike = async (e) => {
     e.stopPropagation(); // Prevents triggering the handleClick event
     console.log(localStorage)
-    setLiked(!liked);
+    await setLiked(!liked);
     console.log('front end', token)
     console.log('front end', liked)
-
-    
     //send to the backend
     try {
       const response = await axios.post('http://localhost:5000/favorites',{item,token,liked})
@@ -90,7 +88,6 @@ const MediaItem = ({item}, like = false) => {
               onClick={handleLike}
               className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
             />
-            
             )
             }
             </div>

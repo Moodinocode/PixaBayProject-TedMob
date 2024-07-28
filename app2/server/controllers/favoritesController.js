@@ -3,9 +3,9 @@ import {setFavorite,removeFavorite,getAllFavorites} from '../models/Favorite.js'
 import { getID } from '../models/User.js';
 
 const toggleLike = async (req,res) => {
-  const {item,token,isLiked} = req.body;
+  const {item,token,liked} = req.body;
 
-  console.log('toggleLike:',isLiked)
+  console.log('toggleLike liked value = ',liked)
   // const itemType = item.type;
   // const mediaThumbnail = item.userImageURL
   // const mediaActive = media.type ==='image'? item.userImageURL : item.videos.medium.url
@@ -21,7 +21,7 @@ const toggleLike = async (req,res) => {
 
   try {
     let result;
-    if (!isLiked) {
+    if (liked) {
       console.log('toggleLike removing media item from favorites')
       result = await removeFavorite(user_id, item);
     } else {
