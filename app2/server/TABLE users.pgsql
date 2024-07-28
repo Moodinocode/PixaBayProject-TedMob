@@ -37,12 +37,20 @@ CREATE TABLE Users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- CREATE TABLE Favorites (
+--     id SERIAL PRIMARY KEY,
+--     user_id INT NOT NULL,
+--     media_link_thumbnail VARCHAR(255) NOT NULL,
+--     media_link_active VARCHAR(255) NOT NULL,
+--     media_type VARCHAR(50) NOT NULL,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (user_id) REFERENCES Users(id)
+-- );
+
 CREATE TABLE Favorites (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    media_link_thumbnail VARCHAR(255) NOT NULL,
-    media_link_active VARCHAR(255) NOT NULL,
-    media_type VARCHAR(50) NOT NULL,
+    media JSONB NOT NULL, -- JSONB column to store the media item
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );

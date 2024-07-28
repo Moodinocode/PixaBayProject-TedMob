@@ -1,19 +1,29 @@
+import { verifyToken } from '../config/jwt.js';
 import {setFavorite,removeFavorite,getAllFavorites} from '../models/Favorite.js'
 import { getID } from '../models/User.js';
 
 const toggleLike = async (req,res) => {
-  const {item,loggedEmail,isLiked} = req.body;
-  const itemType = item.type;
-  const mediaThumbnail = item.userImageURL
-  const mediaActive = media.type ==='image'? item.userImageURL : item.videos.medium.url
-  const user_id = getID(loggedEmail)
+  const {item,token,isLiked} = req.body;
+
+  console.log(isLiked)
+  // const itemType = item.type;
+  // const mediaThumbnail = item.userImageURL
+  // const mediaActive = media.type ==='image'? item.userImageURL : item.videos.medium.url
+  console.log(token)
+
+  const tokenverified = await verifyToken(token)
+  console.log('token verified: ',tokenverified)
+
+
+  const user_id = tokenverified
+
 
   try {
     let result;
-    if (isLiked) {
-      result = await removeFavorite(user_id, media_link_thumbnail);
+    if (!isLiked) {
+      result = await removeFavorite(user_id, item);
     } else {
-      result = await setFavorite(user_id, media_link_thumbnail, media_link_active, media_type);
+      result = await setFavorite(user_id, item);
     }
     res.status(200).json(result);
   } catch (error) {

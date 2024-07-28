@@ -57,7 +57,10 @@ const login = async (req,res) => {
   if (!(await userIsAuthorized(email))){
     const id = await getID(email)
     const token = await getDBTokenById(id)
-    //createDBToken(token,id)
+    // if token expired
+    // token = createToken({id})
+    // createDBToken(token,id)
+
   
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
     console.log(verificationUrl)
@@ -95,9 +98,10 @@ const login = async (req,res) => {
   console.log('getting ID')
   const id = await getID(email)
   console.log('ID got id =',id)
-  const token = getDBTokenById(id);
+  const token = await getDBTokenById(id);
+  console.log('backend token',token)
 
-  res.json({token: token });
+  res.json({token:token});
 }
 
 const accVerification = async (req,res) => {

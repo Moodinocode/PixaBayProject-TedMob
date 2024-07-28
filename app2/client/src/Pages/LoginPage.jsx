@@ -14,13 +14,11 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/auth/login', {email,password});
-      console.log('login response:', response.data);
-
-
-      const {token} = response.data
+      console.log(response.data)
+      const token = response.data.token
+      console.log('retrieved token',token)
       localStorage.setItem("token",token)
       navigate('/home');
-
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',error)

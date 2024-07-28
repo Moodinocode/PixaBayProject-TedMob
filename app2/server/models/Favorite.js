@@ -1,17 +1,17 @@
 import pool from "../config/db.js";
 
-const setFavorite = async (user_id, media_link_thumbnail, media_link_active, media_type) => {
+const setFavorite = async (user_id,media_item) => {
   const result = await pool.query(
-    `INSERT INTO favorites (user_id, media_link_thumbnail, media_link_active, media_type) VALUES ($1, $2, $3, $4) RETURNING *`,
-    [user_id, media_link_thumbnail, media_link_active, media_type]
+    'INSERT INTO favorites (user_id, media) VALUES ($1, $2)',
+    [user_id, media_item]
   );
   return result.rows[0];
 };
 
-const removeFavorite = async (user_id, media_link_thumbnail) => {
+const removeFavorite = async (user_id, media_item) => {
   const result = await pool.query(
-    `DELETE FROM favorites WHERE user_id = $1 AND media_link_thumbnail = $2 RETURNING *`,
-    [user_id, media_link_thumbnail]
+    'DELETE FROM favorites WHERE user_id = $1 AND media = $2 ',
+    [user_id, media_item]
   );
   return result.rows[0];
 };
