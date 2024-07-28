@@ -5,26 +5,30 @@ import { getID } from '../models/User.js';
 const toggleLike = async (req,res) => {
   const {item,token,isLiked} = req.body;
 
-  console.log(isLiked)
+  console.log('toggleLike:',isLiked)
   // const itemType = item.type;
   // const mediaThumbnail = item.userImageURL
   // const mediaActive = media.type ==='image'? item.userImageURL : item.videos.medium.url
-  console.log(token)
+  console.log('toggleLike:',token)
 
   const tokenverified = await verifyToken(token)
   console.log('token verified: ',tokenverified)
 
 
-  const user_id = tokenverified
+  const user_id = tokenverified.id
+  console.log('user_id:',user_id)
 
 
   try {
     let result;
     if (!isLiked) {
+      console.log('toggleLike removing media item from favorites')
       result = await removeFavorite(user_id, item);
     } else {
+      console.log('toggleLike setting media item as favorite')
       result = await setFavorite(user_id, item);
     }
+    console.log('toggle Like result:',result)
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

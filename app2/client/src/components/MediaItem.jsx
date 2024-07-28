@@ -26,21 +26,7 @@ const MediaItem = ({item}, like = false) => {
     
     //send to the backend
     try {
-      const response = axios.post('http://localhost:5000/favorites',{item,token,liked})
-    } catch (error) {
-      console.error('Error toggling media like: ', error);
-    }
-
-    //getting token
-    // const token = localStorage.getItem('token'); 
-    // if (!token) {
-    //   throw new Error('No token found');
-    // }
-    //decoded.userId; // Adjust this based on your token's payload structure
-
-  //const decoded = jwt_decode(token);
-    try {
-      const response = await axios.post('http://localhost:5000/favorites',{item,token,liked})//either send with it the liked balue or have to check the db if already liked or not
+      const response = await axios.post('http://localhost:5000/favorites',{item,token,liked})
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',error)
@@ -55,12 +41,12 @@ const MediaItem = ({item}, like = false) => {
             <img src={item.userImageURL} alt={item.tags} className='w-full h-auto'/>
             <div>
             {liked ? (
-              <FiHeart
+              <FaHeart
                 onClick={handleLike}
                 className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
               />
             ): (
-              <FaHeart
+              <FiHeart
               onClick={handleLike}
               className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
             />
@@ -74,12 +60,12 @@ const MediaItem = ({item}, like = false) => {
             <img src={item.userImageURL} alt={item.tags} className='w-full h-auto'/>
             <div>
             {liked ? (
-              <FiHeart
+              <FaHeart
                 onClick={handleLike}
                 className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
               />
             ): (
-              <FaHeart
+              <FiHeart
               onClick={handleLike}
               className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
             />
@@ -95,12 +81,12 @@ const MediaItem = ({item}, like = false) => {
           </video>
           <div>
             {liked ? (
-              <FiHeart
+              <FaHeart
                 onClick={handleLike}
                 className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
               />
             ): (
-              <FaHeart
+              <FiHeart
               onClick={handleLike}
               className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
             />
@@ -117,12 +103,12 @@ const MediaItem = ({item}, like = false) => {
           <RxVideo  className='text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-1  bg-black bg-opacity-30 text-white' />
           <div>
             {liked ? (
-              <FiHeart
+              <FaHeart
                 onClick={handleLike}
                 className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
               />
             ): (
-              <FaHeart
+              <FiHeart
               onClick={handleLike}
               className='text-4xl absolute top-0 right-0 p-1 bg-black bg-opacity-50 text-white pointer'
             />
