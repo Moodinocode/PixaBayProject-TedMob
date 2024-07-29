@@ -22,7 +22,7 @@ const updatePassword = async (email,newPassword) =>{
 const emailRegistered = async (email) => {
   const result = await pool.query("SELECT COUNT(*) FROM users WHERE email = $1", [email])
   const count = parseInt(result.rows[0].count,10);
-  console.log(count)
+  logger.info('email registered count:',count,{ userId: req.meta.user_id })
   return count !== 0;
 }
 
@@ -32,16 +32,16 @@ const userIsAuthorized = async(email) => {
     [email]
   );
   if (result.rows.length === 0) {
-    console.log('No user found with this email');
+    logger.info('No user found with this email',{ userId: req.meta.user_id })
     return false;
   }
-  console.log('User verification status =', result.rows[0].verified);
+  logger.info('User verification status =', result.rows[0].verified,{ userId: req.meta.user_id })
   return result.rows[0].verified;
 };
 
 const getID = async (email) => {
   const result = await pool.query("SELECT id FROM users WHERE email = $1", [email])
-  console.log('get ID id =',result.rows[0].id)
+  logger.info('get ID id =',result.rows[0].id,{ userId: req.meta.user_id })
   return result.rows[0].id;
 }
 const authorizeUser = async(id) => {

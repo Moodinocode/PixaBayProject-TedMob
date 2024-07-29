@@ -22,6 +22,7 @@ export const fetchMedia = async (query) => {
       params: {
         key: pixaBayKey,
         q: query,
+        
       }
     })
     const resVideo = await axios.get(VideoURL, {
@@ -41,6 +42,7 @@ export const fetchMedia = async (query) => {
       const shuffledData = fisherYatesShuffle(data) 
       data = fisherYatesShuffle(shuffledData);
     }
+    console.log(data.length)
     return data
   } catch (error) {
     console.error('Error fetching media from Pixabay:', error);

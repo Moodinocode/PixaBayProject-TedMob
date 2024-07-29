@@ -32,7 +32,7 @@ const sendMail = async (to,subject,text) => {
   return Promise.race([sendMailPromise, timeoutPromise])//this wont work beacuase it returns true if email is send successfully instead of it being returned
     .then(() => true)
     .catch(error => {
-      console.error('Error sending email:', error);
+      logger.error('Error sending email:', error)
       return false;
     });
 }

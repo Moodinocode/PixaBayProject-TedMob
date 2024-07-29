@@ -78,3 +78,16 @@ TRUNCATE TABLE Tokens, Favorites, Users RESTART IDENTITY CASCADE;
 Delete from tokens where id > 5
 
 Delete from favorites where id > 3
+
+
+
+
+CREATE TABLE Logs (
+    id SERIAL PRIMARY KEY,
+    level VARCHAR(50), -- The severity level of the log (e.g., 'info', 'warn', 'error')
+    message TEXT,  -- The log message describing the event
+    meta JSONB,-- Additional metadata related to the log (e.g., request details, error stack)
+    timestamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, -- The time the log entry was created
+    user_id INT,  -- The ID of the user associated with the log (if applicable)
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+);

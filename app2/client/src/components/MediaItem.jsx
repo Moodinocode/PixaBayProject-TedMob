@@ -7,7 +7,7 @@ import { FaHeart } from "react-icons/fa";
 import axios from 'axios';
 
 
-const MediaItem = ({item}, like = false) => {
+const MediaItem = ({item}, like) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
   const [liked, setLiked] =  useState(like);
   const [error, setError] = useState('');
@@ -25,6 +25,7 @@ const MediaItem = ({item}, like = false) => {
     //send to the backend
     try {
       const response = await axios.post('http://localhost:5000/favorites',{item,token,liked})
+      console.log(response.data)
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',error)

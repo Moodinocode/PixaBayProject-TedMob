@@ -9,12 +9,13 @@ const createToken = (payload) => {
 
 const verifyToken = (token) => {
   try{
-    console.log('verify token method')
+    logger.info('verifying token mehtod', {userId: req.meta.user_id})
     const dec = jwt.verify(token,JWT_Secret);
     return dec;
   } catch(err) {
-    console.log('verify token catch block')
-    console.error('Token verification error:', err.message);
+    logger.info('verify token catch block', {userId: req.meta.user_id})
+    logger.error('Token verification error:', err.message, {userId: req.meta.user_id})
+
   }
 }
 
