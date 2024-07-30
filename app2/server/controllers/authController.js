@@ -143,21 +143,34 @@ const accVerification = async (req,res) => {
 
 
 
-// const resetPassword = async (req,res) => {
-//   //cehck if email is regestered or they must signup
-//   const {email} = req.body;
-//   const token = createToken({email});
+const resetPassword = async (req,res) => {
+  //cehck if email is regestered or they must signup
+  const {password,token} = req.body;
+  const id = verifyToken(token).id
+  try {
+    updatePassword(id,password)
+    return res.status(200).json({message: 'password updated successfully'})
+  } catch (error) {
+    return res.status(500).json({message: 'error updating password'})
+  }
+}
 
-//   const resetPasswordUrl =   `/reset-password?token=${token}`;
-//   //`${process.env.CLIENT_URL}/reset-password?token=${token}`;
+const resetPasswordMail = async (req,res) => {
+  const {email} = req.body
+  const id = getId(email);
+  const token = verifyToken(id).id
+  const resetPasswordUrl =   `/reset-password?token=${token}`;
+  //`${process.env.CLIENT_URL}/reset-password?token=${token}`;
 
-//   await sendMail(
-//     email,
-//     'Reset Password',
-//     `Click on the link below to reset your password: \n\n${resetPasswordUrl}`
-//   )
+  await sendMail(
+    email,
+    'Reset Password',
+    `Click on the link below to reset your password: \n\n${resetPasswordUrl}`
+  )
+  res.status(200).json({ message: 'Reset password email sent' });
+}
 
-//   res.status(200).json({ message: 'Reset password email sent' });
-// }
 
-export {signup,login,accVerification}
+
+
+export {signup,login,accVerification,resetPassword,resetPasswordMail}

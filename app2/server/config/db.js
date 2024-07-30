@@ -1,7 +1,7 @@
 import  pg  from 'pg'
 import dotenv from 'dotenv';
 dotenv.config();
-import logger from '../middleware/loggerMiddleware';
+import logger from '../middleware/loggerMiddleware.js';
 
 
 logger.info("Database configuration:");

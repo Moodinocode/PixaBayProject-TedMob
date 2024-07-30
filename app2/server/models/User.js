@@ -11,10 +11,10 @@ const checkPassword = async (email,password) => {
   return result === 1;
 }
 
-const updatePassword = async (email,newPassword) =>{
+const updatePassword = async (id,newPassword) =>{
   const result = await pool.query(
-    'UPDATE users SET password = $1 WHERE email = $2 RETURNING *',
-    [newPassword, email]
+    'UPDATE users SET password = $1 WHERE id = $2 RETURNING *',
+    [newPassword, id]
   );
   return result.rows[0];
 }

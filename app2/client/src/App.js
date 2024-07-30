@@ -6,6 +6,7 @@ import SignupPage from './Pages/SignupPage';
 import FavoritesPage from './Pages/FavoritesPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import VerifyEmail from './Pages/VerifyEmail';
+import resetPasswordPage from './Pages/resetPasswordPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -14,9 +15,12 @@ function App() {
         <Route path='/auth/verify' element={<VerifyEmail />}/>
         <Route index element = {<LogInPage/>}/>
         <Route path='/signup' element = {<SignupPage/>}/>
+        <Route path='/passwordResetMail' element = {<resetPasswordmail/>}/>
+
         <Route element={<ProtectedRoute/>}>
           <Route path='/home' element = {<HomePage/>}/>
           <Route path='/favorites' element = {<FavoritesPage/>}/>
+          <Route path='/passwordReset' element = {<resetPasswordPage/>}/>
         </Route>
       </Route>
     )

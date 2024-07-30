@@ -1,24 +1,24 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import {Link,useNavigate} from 'react-router-dom'
+import React from 'react'
 
-
-const LoginPage = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+const resetPasswordPage = () =>  {
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassowrd, setConfirmNewPassowrd] = useState('')
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const token = queryParams.get('token');
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/auth/login', {email,password});
-      console.log(response.data)
-      const token = response.data.token
-      console.log('retrieved token',token)
-      localStorage.setItem("token",token)
-      navigate('/home');
+      if (newPassword===confirmNewPassowrd){
+        const password = newPassword
+        const response = await axios.post('http://localhost:5000/auth/resetPassword', {password,token});
+        console.log(response.data)
+        navigate('/');
+      } else {
+        setError('Password does not match')
+      }
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',error)
@@ -34,9 +34,9 @@ const LoginPage = () => {
             <input
               type="text" 
               className='bg-gray-200 m-4 p-4' 
-              placeholder='Email'
+              placeholder='Password'
               onChange={(e)=>{
-                setEmail(e.target.value)
+                setNewPassword(e.target.value)
                 setError('');
               }}
             />
@@ -45,9 +45,9 @@ const LoginPage = () => {
             <input 
               type="text" 
               className='bg-gray-200 m-4 p-4' 
-              placeholder='Passowrd'
+              placeholder='Confirm Password'
               onChange={(e)=>{
-                setPassword(e.target.value)                
+                setConfirmNewPassowrd(e.target.value)                
                 setError('');
               }}
             />
@@ -60,16 +60,11 @@ const LoginPage = () => {
               >submit</button>
             </div>
             <div className='text-sm'>
-            <span>Dont have an account? </span>
-            <Link className='text-blue-500 hover:text-blue-700 underline' to="/signup">sign Up</Link>
             </div> 
-            <div  className='text-sm mb-2'>
-            <Link className='text-blue-500 hover:text-blue-700 underline' to="/passwordResetMail">Forgot Password?</Link>
-            </div>
           </form>
       </div>
     </div>
   )
 }
 
-export default LoginPage
+export default resetPasswordPage
