@@ -5,39 +5,39 @@ import {createUser,updatePassword, emailRegistered, userIsAuthorized,checkPasswo
 import sendMail from '../config/nodemailer.js'
 
 const signup = async (req,res) => {
-  console.log('data recieved', { userId: req.meta.user_id });
+  console.log('data recieved', );
   const {email, password} = req.body;
 
   //check if email isnt already registered 
   if (await emailRegistered(email)) {
     return res.status(400).json({ message: 'Email already registered.' });
   }else {
-    console.log('email checked', { userId: req.meta.user_id });
+    console.log('email checked', );
   }
 
 
-  console.log('hashing password', { userId: req.meta.user_id });
+  console.log('hashing password', );
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log('hashed', { userId: req.meta.user_id });
+  console.log('hashed', );
 
 
 
   
-  console.log('creating user', { userId: req.meta.user_id });
+  console.log('creating user', );
   createUser(email,hashedPassword)
-  console.log('user craeted', { userId: req.meta.user_id });
+  console.log('user craeted', );
 
 
   const id = await getID(email)
 
-  console.log('signup current id',id,{ userId: req.meta.user_id } )
+  console.log('signup current id',id, )
   const token = createToken({id: id})
-  console.log('signup current token',token,{ userId: req.meta.user_id } )
+  console.log('signup current token',token, )
   createDBToken(token,id)
   
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
-  console.log('verification url sent through email',verificationUrl,{ userId: req.meta.user_id } )
-  console.log('sending mail',{ userId: req.meta.user_id } )
+  console.log('verification url sent through email',verificationUrl, )
+  console.log('sending mail', )
 
   if (!(await sendMail(
     email,
@@ -53,11 +53,11 @@ const signup = async (req,res) => {
 
 const login = async (req,res) => {
   const {email, password} = req.body;
-  console.log('login email',email,{ userId: req.meta.user_id } )
+  console.log('login email',email, )
   if (!(await emailRegistered(email))) {
     return res.status(400).json({ message: 'Email is not registered.' });
   }else {
-    console.log('login email registered',email,{ userId: req.meta.user_id } )
+    console.log('login email registered',email, )
 
   }
 
@@ -70,11 +70,11 @@ const login = async (req,res) => {
 
   
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
-  console.log('login verification url:',verificationUrl,{ userId: req.meta.user_id })
-  console.log('login sending email',{ userId: req.meta.user_id })
+  console.log('login verification url:',verificationUrl,)
+  console.log('login sending email',)
     try 
     {
-      console.log('login try block',{ userId: req.meta.user_id })
+      console.log('login try block',)
       await sendMail(
         email,
         'Verification',
@@ -83,33 +83,33 @@ const login = async (req,res) => {
     } 
     catch (err)
     {
-      console.log('login catch block',{ userId: req.meta.user_id })
+      console.log('login catch block',)
       return res.status(500).json({ message: 'Error sending verification email' });
     } 
     finally 
     {
-      console.log('login finally block',{ userId: req.meta.user_id })
+      console.log('login finally block',)
       return res.status(400).json({ message: 'You must verify you email first.' });
     } 
   }else {
-    console.log('email verified',{ userId: req.meta.user_id })
+    console.log('email verified',)
   }
-  console.log('checking password of email:',email,{ userId: req.meta.user_id })
+  console.log('checking password of email:',email,)
   if (!checkPassword(email,password)){
-    console.log('login password incorrect',{ userId: req.meta.user_id })
+    console.log('login password incorrect',)
     return res.status(400).json({ message: 'Password is incorrect' });
   }else {
-    console.log('Password checked',{ userId: req.meta.user_id })
+    console.log('Password checked',)
 
   }
 
 
-  console.log('log in email',email,{ userId: req.meta.user_id })
-  console.log('log in getting id',{ userId: req.meta.user_id })
+  console.log('log in email',email,)
+  console.log('log in getting id',)
   const id = await getID(email)
-  console.log('log in id got',id,{ userId: req.meta.user_id })
+  console.log('log in id got',id,)
   const token = await getDBTokenById(id);
-  console.log('backend token',token,{ userId: req.meta.user_id })
+  console.log('backend token',token,)
 
 
   res.json({token:token});
@@ -117,23 +117,23 @@ const login = async (req,res) => {
 
 const accVerification = async (req,res) => {
   const {token} = await req.query;
-  console.log('accVerification = ',token,{ userId: req.meta.user_id })
+  console.log('accVerification = ',token,)
   try{
 
-    console.log('verifying token',{ userId: req.meta.user_id })
+    console.log('verifying token',)
     const tokenverified = await verifyToken(token)
-    console.log('token verified: ',tokenverified,{ userId: req.meta.user_id })
+    console.log('token verified: ',tokenverified,)
 
 
     const id = tokenverified.id
 
-    console.log('authorizing User',{ userId: req.meta.user_id })
+    console.log('authorizing User',)
     authorizeUser(id)
-    console.log('User authorized ',{ userId: req.meta.user_id })
+    console.log('User authorized ',)
 
     
   } catch(err){
-    console.log('AccVerification error',{ userId: req.meta.user_id })
+    console.log('AccVerification error',)
     return res.status(400).json({ message: `error: ${err.message}` });
   }
   return res.status(201).json({message: 'User Authorized Successfully'})

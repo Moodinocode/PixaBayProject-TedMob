@@ -19,7 +19,7 @@ app.use(cors({
 
 app.use(express.json()); 
 
-app.use(addUserIdToMeta);
+//app.use(addUserIdToMeta);
 app.set('pool',pool);
 
 // logger middleware
@@ -35,7 +35,7 @@ app.use('/favorites',favoriteRoutes)
 //app.use('/user', authencateToken,userRoutes)
 
 //ErrorHandling middleware
-app.use(errorHandler);
+//app.use(errorHandler);
 
 app.listen(process.env.PORT || 5000, ()=> {
   console.log('Server running on port 5000')

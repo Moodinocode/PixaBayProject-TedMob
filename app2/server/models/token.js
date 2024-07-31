@@ -13,7 +13,7 @@ const getDBTokenById = async (userId) => {
     'SELECT token FROM tokens WHERE user_id = $1',
     [userId]
   );
-  console.log('getDBTokenById returned token =',result.rows[0].token,{ userId: req.meta.user_id })
+  console.log('getDBTokenById returned token =',result.rows[0].token,)
   return result.rows[0].token;
 };
 
