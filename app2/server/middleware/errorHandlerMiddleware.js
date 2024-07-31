@@ -1,7 +1,7 @@
 import logger from './loggerMiddleware.js';
 
 export const errorHandler = (err, req, res, next) => {
-  logger.error('Unhandled error', { 
+  console.log('Unhandled error', { 
     error: err.message, 
     userId: req.meta?.user_id 
   });

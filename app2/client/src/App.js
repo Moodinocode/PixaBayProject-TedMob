@@ -6,7 +6,7 @@ import SignupPage from './Pages/SignupPage';
 import FavoritesPage from './Pages/FavoritesPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import VerifyEmail from './Pages/VerifyEmail';
-import resetPasswordPage from './Pages/resetPasswordPage';
+import ResetPasswordPage from './Pages/ResetPasswordPage';
 
 function App() {
   const router = createBrowserRouter(

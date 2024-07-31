@@ -1,11 +1,11 @@
 import expressWinston from 'express-winston'
-import { transports,format } from 'winston';
-import PostgresTransport from 'winston-pg-native';
+import { transports,format, createLogger } from 'winston';
+//import PostgresTransport from 'winston-pg-native';
 import pool from '../config/db.js'
 
 
 
-const logger = expressWinston.logger({
+const logger = createLogger({
   transports: [
     new transports.Console(),
     // PostgresTransport({

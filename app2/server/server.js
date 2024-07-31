@@ -20,10 +20,10 @@ app.use(cors({
 app.use(express.json()); 
 
 app.use(addUserIdToMeta);
-app.set('pool',pool)
+app.set('pool',pool);
 
 // logger middleware
-app.use(logger)
+//app.use(logger);
       
 
 

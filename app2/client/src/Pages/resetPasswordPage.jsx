@@ -1,10 +1,14 @@
-import React from 'react'
+import React,{useState} from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
-const resetPasswordPage = () =>  {
+
+const ResetPasswordPage = () =>  {
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassowrd, setConfirmNewPassowrd] = useState('')
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const queryParams = new URLSearchParams(window.location.search);
   const token = queryParams.get('token');
 
 
@@ -67,4 +71,4 @@ const resetPasswordPage = () =>  {
   )
 }
 
-export default resetPasswordPage
+export default ResetPasswordPage
