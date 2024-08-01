@@ -58,7 +58,6 @@ const login = async (req,res) => {
     return res.status(400).json({ message: 'Email is not registered.' });
   }else {
     console.log('login email registered',email, )
-
   }
 
   if (!(await userIsAuthorized(email))){
@@ -67,8 +66,6 @@ const login = async (req,res) => {
     // if token expired
     // token = createToken({id})
     // createDBToken(token,id)
-
-  
   const verificationUrl = `http://localhost:3000/auth/verify?token=${token}`
   console.log('login verification url:',verificationUrl,)
   console.log('login sending email',)
@@ -94,13 +91,16 @@ const login = async (req,res) => {
   }else {
     console.log('email verified',)
   }
+
+
+
   console.log('checking password of email:',email,)
-  if (!checkPassword(email,password)){
+
+  if (!(await checkPassword(email,password))){
     console.log('login password incorrect',)
     return res.status(400).json({ message: 'Password is incorrect' });
   }else {
     console.log('Password checked',)
-
   }
 
 
@@ -146,9 +146,12 @@ const accVerification = async (req,res) => {
 const resetPassword = async (req,res) => {
   //cehck if email is regestered or they must signup
   const {password,token} = req.body;
+  console.log('hashing password', );
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('hashed', );
   const id = verifyToken(token).id
   try {
-    updatePassword(id,password)
+    updatePassword(id,hashedPassword)
     return res.status(200).json({message: 'password updated successfully'})
   } catch (error) {
     return res.status(500).json({message: 'error updating password'})

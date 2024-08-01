@@ -75,9 +75,10 @@ ADD COLUMN verified BOOLEAN DEFAULT FALSE;
 
 TRUNCATE TABLE Tokens, Favorites, Users RESTART IDENTITY CASCADE;
 
-Delete from tokens where id > 5
+Delete from tokens where id > 0
+Delete from users where id > 0
 
-Delete from favorites where id > 3
+Delete from favorites where id > 0
 
 
 
