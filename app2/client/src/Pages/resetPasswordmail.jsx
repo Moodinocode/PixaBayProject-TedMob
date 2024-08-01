@@ -1,7 +1,8 @@
-import React from 'react'
-import { useState } from 'react'
+import React,{ useState } from 'react'
+import axios from 'axios'
+import { Link,useNavigate } from 'react-router-dom'
 
-const resetPasswordmail = () => {
+const ResetPasswordMail = () => {
   const [email, setEmail] = useState('')
   const navigate = useNavigate();
   const [error, setError] = useState('');
@@ -13,6 +14,9 @@ const resetPasswordmail = () => {
     try {
       const response = await axios.post('http://localhost:5000/auth/resetPasswordMail', {email});
       console.log(response.data)
+      const token = response.data.token
+      console.log('retrieved token',token)
+      localStorage.setItem("token",token)
     } catch (err) {
       setError(err.response.data.message)
       console.log('error:',error)
@@ -20,15 +24,15 @@ const resetPasswordmail = () => {
   }
   return (
     <div className='flex justify-center items-center h-screen bg-green-100'>
-      <div className='w-64 h-auto bg-white rounded-lg shadow-2xl border border-gray-300 relative overflow-hidden'>
-        <form className='text-center' onSubmit={handleSubmit}>
+      <div className='w-56 h-auto bg-white rounded-lg shadow-2xl border border-gray-300 relative overflow-hidden '>
+        <form className='text-center p-4' onSubmit={handleSubmit}>
           <div>
             <input
               type="text" 
-              className='bg-gray-200 m-4 p-4' 
+              className='bg-gray-200 p-2' 
               placeholder='Email'
               onChange={(e)=>{
-                setNewPassword(e.target.value)
+                setEmail(e.target.value)
                 setError('');
               }}
             />
@@ -50,4 +54,4 @@ const resetPasswordmail = () => {
 }
 
 
-export default resetPasswordmail
+export default ResetPasswordMail

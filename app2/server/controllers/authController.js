@@ -157,17 +157,20 @@ const resetPassword = async (req,res) => {
 
 const resetPasswordMail = async (req,res) => {
   const {email} = req.body
-  const id = getId(email);
-  const token = verifyToken(id).id
-  const resetPasswordUrl =   `/reset-password?token=${token}`;
+  const id = await getID(email);
+  console.log(id)
+  const token = await  getDBTokenById(id)
+  const resetPasswordUrl =   `http://localhost:3000/passwordReset?token=${token}`;
   //`${process.env.CLIENT_URL}/reset-password?token=${token}`;
+  console.log(resetPasswordUrl)
 
   await sendMail(
     email,
     'Reset Password',
-    `Click on the link below to reset your password: \n\n${resetPasswordUrl}`
+    `Click on the link below to reset  your password: \n\n${resetPasswordUrl}`
   )
-  res.status(200).json({ message: 'Reset password email sent' });
+  console.log()
+  return res.status(200).json({ message: 'Reset password email sent', token:token });
 }
 
 

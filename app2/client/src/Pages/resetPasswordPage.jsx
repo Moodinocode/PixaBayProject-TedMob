@@ -19,6 +19,7 @@ const ResetPasswordPage = () =>  {
         const password = newPassword
         const response = await axios.post('http://localhost:5000/auth/resetPassword', {password,token});
         console.log(response.data)
+        localStorage.removeItem(token)
         navigate('/');
       } else {
         setError('Password does not match')
