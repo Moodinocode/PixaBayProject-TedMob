@@ -1,7 +1,13 @@
 import axios from 'axios'
 
 
-const pixaBayKey = process.env.REACT_APP_PIXABAY_API_KEY || 'REDACTED_PIXABAY_KEY'
+// Set REACT_APP_PIXABAY_API_KEY in .env; see .env.example. Create React App
+// inlines this at build time, so it must be present before building.
+const pixaBayKey = process.env.REACT_APP_PIXABAY_API_KEY
+
+if (!pixaBayKey) {
+  console.error('REACT_APP_PIXABAY_API_KEY is not set — image search will fail.')
+}
 
 const photoURL = 'https://pixabay.com/api/'
 const VideoURL = 'https://pixabay.com/api/videos/'

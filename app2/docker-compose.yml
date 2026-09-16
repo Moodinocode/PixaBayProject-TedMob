@@ -1,24 +1,37 @@
 version: '3.8'
 
-services: 
+# Values come from a .env file next to this one; see .env.example.
+# Note the lack of spaces around "=" below: Compose splits each entry on the
+# first "=", so "DB_USER = postgres" would define a variable literally named
+# "DB_USER " and the application would never find it.
+
+services:
   server:
-    build: 
-      context: ./server 
+    build:
+      context: ./server
       dockerfile: Dockerfile
     volumes:
       - ./server:/usr/src/app
     ports:
       - '5000:5000'
     environment:
-      - DB_USER = postgres
-      - DB_PASSWORD = 123456
-      - DB_HOST = localhost
-      - DB_PORT = 5432
-      - DB_NAME = postgres
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=${POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1d}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - MAIL_FROM=${MAIL_FROM}
     depends_on:
       - db
-  client: 
-    build: 
+
+  client:
+    build:
       context: ./client
       dockerfile: Dockerfile
     volumes:
@@ -26,19 +39,18 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - REACT_APP_PIXABAY_API_KEY='REDACTED_PIXABAY_KEY'
+      - REACT_APP_PIXABAY_API_KEY=${REACT_APP_PIXABAY_API_KEY}
     depends_on:
       - server
-  db: 
+
+  db:
     image: postgres:16
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
 volumes:
   pgdata:
-  
-      
